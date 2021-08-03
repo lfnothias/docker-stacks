@@ -1,11 +1,21 @@
 # Copyright (c) Jupyter Development Team.
 # Distributed under the terms of the Modified BSD License.
 
-# Ubuntu 20.04 (focal)
-# https://hub.docker.com/_/ubuntu/?tab=tags&name=focal
-ARG ROOT_CONTAINER=ubuntu:focal-20210609
+FROM openms/executables:release-2.5.0
 
-FROM $ROOT_CONTAINER
+# Installing core dependencies for python
+RUN apt-get update -y
+RUN apt-get install -y python3-pip python3 build-essential
+
+# Installing Virtual Frame Buffer
+RUN apt-get install -y xvfb
+RUN apt-get install -y wget
+
+# Binder Specific Installations
+RUN pip3 install --no-cache-dir notebook==5.*
+RUN pip3 install --no-cache-dir notebook
+RUN pip3 install --no-cache-dir jupyterhub
+RUN pip3 install --no-cache-dir jupyterlab
 
 LABEL maintainer="Jupyter Project <jupyter@googlegroups.com>"
 ARG NB_USER="jovyan"
